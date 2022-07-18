@@ -31,8 +31,6 @@ namespace AppointmentSystem.Controllers
         {
             try
             {
-               // AppoinmentDetail appoinmentDetail = new AppoinmentDetail();
-               // appoinmentDetail = JsonConvert.DeserializeObject<AppoinmentDetail>(appointment);
                 _context.Add(appoinmentDetail);
                await _context.SaveChangesAsync();
                 return StatusCode(StatusCodes.Status200OK, "Appointment Successfully inserted..!!");
