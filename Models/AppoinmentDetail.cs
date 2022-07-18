@@ -15,5 +15,6 @@ namespace AppointmentSystem.Models
         public DateTime? AppoinmnetDate { get; set; }
         public int? PatientId { get; set; }
         public string DoctorName { get; set; }
+
     }
 }
