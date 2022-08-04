@@ -27,7 +27,7 @@ namespace AppointmentSystem.Controllers
         
         [HttpPost]
         [Route("CreateAppointment")]
-        public async Task<ActionResult<AppoinmentDetail>> CreateAppointment([FromBody] AppoinmentDetail appoinmentDetail)
+        public async Task<ActionResult<AppoinmentDetails>> CreateAppointment([FromBody] AppoinmentDetails appoinmentDetail)
         {
             try
             {
@@ -41,5 +41,27 @@ namespace AppointmentSystem.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("CreatePatient")]
+        public async Task<ActionResult<PatientMaster>> CreatePatient([FromBody] PatientMaster patientmaster)
+        {
+
+            try
+            {
+                _context.Add(patientmaster);
+                await _context.SaveChangesAsync();
+                return StatusCode(StatusCodes.Status200OK, "Patient registration successfully done..!!");
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error retrieving data from the database");
+            }
+
+
+        }
+        [HttpGet]
+        [Route("GetPatients")]
+        public IEnumerable<PatientMaster> GetPatients() => _context.PatientMaster.ToList();
     }
 }

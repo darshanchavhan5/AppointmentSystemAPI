@@ -2,7 +2,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-#nullable disable
+// Code scaffolded by EF Core assumes nullable reference types (NRTs) are not used or disabled.
+// If you have enabled NRTs for your project, then un-comment the following line:
+// #nullable disable
 
 namespace AppointmentSystem.Models
 {
@@ -17,25 +19,24 @@ namespace AppointmentSystem.Models
         {
         }
 
-        public virtual DbSet<AppoinmentDetail> AppoinmentDetails { get; set; }
-        public virtual DbSet<Doctor> Doctors { get; set; }
-        public virtual DbSet<PatientMaster> PatientMasters { get; set; }
-        public virtual DbSet<UserType> UserTypes { get; set; }
+        public virtual DbSet<AppoinmentDetails> AppoinmentDetails { get; set; }
+        public virtual DbSet<Doctor> Doctor { get; set; }
+        public virtual DbSet<Logs> Logs { get; set; }
+        public virtual DbSet<PatientMaster> PatientMaster { get; set; }
+        public virtual DbSet<UserType> UserType { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
                 optionsBuilder.UseSqlServer("Server=(LocalDB)\\MSSQLLocalDB;Database=AppoinmentSystem;Trusted_Connection=True;");
             }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS");
-
-            modelBuilder.Entity<AppoinmentDetail>(entity =>
+            modelBuilder.Entity<AppoinmentDetails>(entity =>
             {
                 entity.HasKey(e => e.AppoinmentId);
 
@@ -58,13 +59,13 @@ namespace AppointmentSystem.Models
                 entity.Property(e => e.PatientName)
                     .HasMaxLength(50)
                     .HasDefaultValueSql("(N'-')");
+
+                entity.Property(e => e.Status).HasColumnName("status");
             });
 
             modelBuilder.Entity<Doctor>(entity =>
             {
                 entity.HasKey(e => e.DocId);
-
-                entity.ToTable("Doctor");
 
                 entity.Property(e => e.CreatedBy).HasMaxLength(50);
 
@@ -89,11 +90,40 @@ namespace AppointmentSystem.Models
                     .HasDefaultValueSql("(N'-')");
             });
 
+            modelBuilder.Entity<Logs>(entity =>
+            {
+                entity.HasKey(e => e.Logid)
+                    .HasName("PK__logs__7838F2657C00C07B");
+
+                entity.ToTable("logs");
+
+                entity.Property(e => e.Logid).HasColumnName("logid");
+
+                entity.Property(e => e.Actionname)
+                    .HasColumnName("actionname")
+                    .HasMaxLength(30)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Controllername)
+                    .HasColumnName("controllername")
+                    .HasMaxLength(30)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Logtype)
+                    .HasColumnName("logtype")
+                    .HasMaxLength(10)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Message).HasColumnName("message");
+
+                entity.Property(e => e.CreatedOn)
+                .HasColumnName("createdon")
+                .IsUnicode(false); 
+            });
+
             modelBuilder.Entity<PatientMaster>(entity =>
             {
                 entity.HasKey(e => e.PatientId);
-
-                entity.ToTable("PatientMaster");
 
                 entity.Property(e => e.CreatedBy)
                     .HasMaxLength(50)
@@ -120,8 +150,6 @@ namespace AppointmentSystem.Models
 
             modelBuilder.Entity<UserType>(entity =>
             {
-                entity.ToTable("UserType");
-
                 entity.Property(e => e.UserTypeId).HasColumnName("UserTypeID");
 
                 entity.Property(e => e.CreatedBy)
@@ -129,8 +157,8 @@ namespace AppointmentSystem.Models
                     .HasDefaultValueSql("(N'-')");
 
                 entity.Property(e => e.UserType1)
-                    .HasMaxLength(20)
                     .HasColumnName("UserType")
+                    .HasMaxLength(20)
                     .HasDefaultValueSql("(N'-')");
             });
 
